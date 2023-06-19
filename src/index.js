@@ -1,6 +1,5 @@
 const express = require('express');
-const fs = require('fs').promises;
-const { join } = require('path');
+const talkerRead = require('./talkerRead');
 
 const app = express();
 app.use(express.json());
@@ -18,8 +17,13 @@ app.listen(PORT, () => {
 });
 
 app.get('/talker', async (req, res) => {
-  const path = './talker.json';
-  const contentFile = await fs.readFile(join(__dirname, path), 'utf-8');
-  const talkers = JSON.parse(contentFile);
-  return res.status(200).json(talkers); 
+  const talkers = await talkerRead.readTalkerFile();
+  return res.status(200).json(talkers);
+});
+
+app.get('/talker/:id', async (req, res) => {
+  const { id } = req.params;
+  const talker = await talkerRead.getTalkerById(Number(id));
+  if (talker) return res.status(200).json(talker);
+  return res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
 });
