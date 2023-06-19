@@ -27,3 +27,18 @@ app.get('/talker/:id', async (req, res) => {
   if (talker) return res.status(200).json(talker);
   return res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
 });
+
+app.post('/login', (req, res) => {
+  const requiredProperties = ['email', 'password'];
+  if (requiredProperties.every((property) => property in req.body)) {
+    const generateRandomToken = Math.random().toString(16).substr(2)
+      + Math.random().toString(16).substr(2);
+    const token = generateRandomToken
+      .split('')
+      .splice(1, 16)
+      .join('');
+    res.status(200).json({ token });
+  } else {
+    res.sendStatus(400);
+  }
+});
