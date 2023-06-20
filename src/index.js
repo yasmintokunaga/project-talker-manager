@@ -84,3 +84,15 @@ app.put(
     return res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
   },
 );
+
+app.delete(
+  '/talker/:id',
+  validateToken,
+  async (req, res) => {
+    const { id } = req.params;
+    const talkers = await talkerRead.readTalkerFile();
+    const updateListTalker = talkers.filter((talker) => talker.id !== Number(id));
+    talkerRead.writeTalkerFile(updateListTalker);
+    return res.status(204).end();
+  },
+);
