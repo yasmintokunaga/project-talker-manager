@@ -15,12 +15,12 @@ const getTalkerById = async (id) => {
   return findTalker;
 };
 
-const addNewTalker = (talkers) => {
+const writeTalkerFile = (talkers) => {
   fs.writeFile(join(__dirname, path), JSON.stringify(talkers));
 };
 
 module.exports = {
   readTalkerFile,
   getTalkerById,
-  addNewTalker,
+  writeTalkerFile,
 };
